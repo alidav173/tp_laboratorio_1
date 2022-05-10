@@ -1,97 +1,105 @@
 /*
  ============================================================================
- Name        : TP1.c
+ Name        : TP1_LABORATORIO.c
  Author      : Alí Ansidey
- Version     : 1.0
- División    : E
- Description : Trabajo práctico Taller de Programación 1
+ Version     :1.0.1
+ Copyright   : Your copyright notice
+ Description : TP1 LABORATORIO PROGRAMACION 1
  ============================================================================
  */
+#include <stdio.h>
+#include "input.h"
+#include <limits.h>
+#define SALIDA 6
+#define ERROR -1
+
 
 #include <stdio.h>
-#include <stdlib.h>
-#include "funciones.h"
-#define INGRESAR_NUM_UNO 1
-#define INGRESAR_NUM_DOS 2
-#define OPERACIONES 3
-#define INFORMAR 4
-#define SALIR 5
+#include "input.h"
+#include <limits.h>
+#define SALIDA 6
+#define ERROR -1
+#define AEROLINEAS 'y'
+#define LATAM 'z'
+
+int main()
+{
+   setbuf (stdout, NULL);
+   int opcionELegida, validacion, contadorErrores;
+   float kilometraje, precioAerolineas, precioLatam, precioTarjetaDlatam,precioTarjetaDAero, precioTarjetaCLatam, precioTarjetaCAero, precioBitcoinLatam, precioBitcoinAero, diferenciaPrecio, precioPorKmAero,precioPorKmLatam ;
+   char opcionMenu2;
+
+   mostrarMenuPrincipal();
+
+   validacion = getInt("\n Ingrese la opción: ",3, 1, 6, "\n Reingrese la opcion nuevamente:\n", &opcionELegida);
+   while(validacion!=ERROR && opcionELegida!=SALIDA){
+      switch(opcionELegida){
+       case 1:
+       validacion = getFloat("\n Ingrese el kilometraje: ",3, 1, INT_MAX, "\n Reingrese el kilometraje: \n", &kilometraje);
+       break;
+
+       case 2:
+       mostrarMenu2();
+       validacion = getChar("\n Ingrese la aerolinea: ", "\n Reingrese la aerolinea: \n", &opcionMenu2, 3);
+       while(opcionMenu2 !=AEROLINEAS && opcionMenu2 != LATAM){
+    	   getChar("\n Ingrese la aerolinea: ", "\n Reingrese la aerolinea: \n", &opcionMenu2, 3);
+       }
+
+       if(opcionMenu2 == AEROLINEAS){
+    	   getFloat("\n Ingrese el precio de Aerolineas: ",3, 0, INT_MAX, "\n Ingrese el precio Aerolineas:", &precioAerolineas);
+
+       }
+       if(opcionMenu2 == LATAM){
+    	   getFloat("\n Ingrese el precio de Latam: ",3, 0, INT_MAX, "\n Ingrese el precio Latam:", &precioLatam);
+
+       }
+       break;
+
+       case 3:
+    	   contadorErrores = 0;
+    	   validacion = calcularCostos(kilometraje, precioAerolineas, &precioTarjetaDAero, &precioTarjetaCAero, &precioBitcoinAero, &precioPorKmAero);
+    	   contadorErrores +=validacion;
+    	   validacion = calcularCostos(kilometraje, precioLatam, &precioTarjetaDlatam, &precioTarjetaCLatam, &precioBitcoinLatam, &precioPorKmLatam);
+    	   contadorErrores +=validacion;
+    	   validacion = diferenciaDePrecios(precioAerolineas, precioLatam, &diferenciaPrecio);
+    	   contadorErrores +=validacion;
+    	   if(contadorErrores == 0){
+    		   printf("\n Se han realizado los calculos con éxito");
+    	   }
+    	   else
+    		   printf("\n No se han realizado los calculos");
+       break;
+
+       case 4:
+       printf("\n Km ingresados: %.2f",kilometraje);
+       printf("\n Precio Aerolineas: %.2f",precioAerolineas);
+       mostrarResultados(&precioTarjetaDAero, &precioTarjetaCAero, &precioBitcoinAero,&precioPorKmAero);
+       printf("\n Precio Latam: %.2f",precioLatam);
+       mostrarResultados(&precioTarjetaDlatam, &precioTarjetaCLatam, &precioBitcoinLatam,&precioPorKmLatam);
+       mostrarDiferenciaDePrecios(&diferenciaPrecio);
+       break;
+
+       case 5:
+       kilometraje = 7090;
+       precioAerolineas = 162965;
+       precioLatam = 159339;
+
+       calcularCostos(kilometraje, precioAerolineas, &precioTarjetaDAero, &precioTarjetaCAero, &precioBitcoinAero, &precioPorKmAero);
+       calcularCostos(kilometraje, precioLatam, &precioTarjetaDlatam, &precioTarjetaCLatam, &precioBitcoinLatam, &precioPorKmLatam);
+       diferenciaDePrecios(precioAerolineas, precioLatam, &diferenciaPrecio);
+       printf("\n Precio Aerolineas: %.2f",precioAerolineas);
+       mostrarResultados(&precioTarjetaDAero, &precioTarjetaCAero, &precioBitcoinAero,&precioPorKmAero);
+       printf("\n Precio Latam: %.2f",precioLatam);
+       mostrarResultados(&precioTarjetaDlatam, &precioTarjetaCLatam, &precioBitcoinLatam,&precioPorKmLatam);
+       mostrarDiferenciaDePrecios(&diferenciaPrecio);
+       break;
 
 
-int main(void) {
-	int numeroUno;
-	int numeroDos;
-	int suma;
-	int resta;
-	int multiplicacion;
-	float division;
-	float factorialUno;
-	float factorialDos;
-	int operacion;
-
-
-	do{
-		printf("\n Menú de opciones: \n");
-		printf("1.Ingresar 1er operando (A=x)  \n");
-		printf("2.Ingresar 2do operando (B=y) \n");
-		printf("3.Calcular todas las operaciones \n");
-		printf("4.Informar resultados \n");
-		printf("5. Salir del programa \n");
-		operacion = IngresarEntero("Escoja una operación: ");
-
-		switch(operacion){
-		case INGRESAR_NUM_UNO:
-			numeroUno = IngresarEntero("Ingrese el primer número: \n");
-			break;
-
-		case INGRESAR_NUM_DOS:
-			numeroDos = IngresarEntero("Ingrese el segundo número: \n");
-			break;
-
-		case OPERACIONES:
-			suma = Sumar(numeroUno, numeroDos);
-			resta = Restar(numeroUno, numeroDos);
-			multiplicacion = Multiplicar(numeroUno, numeroDos);
-			division = Dividir(numeroUno, numeroDos);
-			factorialUno = Factorial(numeroUno);
-			factorialDos = Factorial(numeroDos);
-			break;
-
-		case INFORMAR:
-			printf("\n Los resultados de las operaciones son: \n");
-			printf("El número ingresado fue: %d \n", numeroUno);
-			printf("El número ingresado fue: %d \n", numeroDos);
-			printf("El resultado de %d + %d es: %d \n",numeroUno, numeroDos, suma);
-			printf("El resultado de %d - %d es: %d \n",numeroUno, numeroDos, resta);
-
-				if(numeroDos == 0 && division == 0){
-					printf("No es posible dividir por cero \n");
-				}
-				else{
-					printf("El resultado de %d / %d es: %.2f \n",numeroUno, numeroDos, division);
-				}
-
-				printf("El resultado de %d * %d es: %d \n",numeroUno, numeroDos, multiplicacion);
-
-				if(factorialUno != 0){
-					printf("El factorial del número %d es: %.0f \n", numeroUno, factorialUno);
-				}
-				else{
-					printf("No existe factorial del número %d  \n", numeroUno);
-				}
-
-
-				if(factorialDos != 0){
-					printf("El factorial del número %d es: %.0f \n", numeroDos, factorialDos);
-				}
-				else{
-					printf("No existe factorial del número %d \n", numeroDos);
-				}
-
-				break;
-
-		}
-	}while(operacion != SALIR);
-
-	return 0;
+   }
+   mostrarMenuPrincipal();
+   fflush(stdin);
+   validacion = getInt("\n Ingrese la opción: ",3, 1, 6, "\n Reingrese la opcion nuevamente:", &opcionELegida);
+   }
+    printf("\n Ha salido del sistema");
+    return 0;
 }
