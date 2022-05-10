@@ -12,6 +12,7 @@
 #include <stdlib.h>
 #include "funciones.h"
 #define TAMANIO_ARRAY 2000
+#define SALIR 6
 
 
 
@@ -20,11 +21,12 @@ int main(void) {
 
 	int opcion, opcion1, opcion2, opcion3, opcion4,opcion5,opcion6, opcion7, orden, idBuscado;
 
+	//Creo el array e inicilizo con la funcion initPassengers
 	Passenger ArrayPassenger[TAMANIO_ARRAY];
 	initPassengers(ArrayPassenger, TAMANIO_ARRAY);
 
 	mostrarMenuUno();
-	utn_getNumero(&opcion,"Ingrese una opción\n", "Reingrese una opción\n",1,5,3);
+	utn_getNumero(&opcion,"Ingrese una opción\n", "Reingrese una opción\n",1,6,3);
 	do{
 		switch(opcion){
 		case 1:
@@ -66,11 +68,17 @@ int main(void) {
 				break;
 			}
 			break;
+			case 5:
+				//Hardcodeo de pasajeros en el arrayPassenger
+				addPassenger(ArrayPassenger, TAMANIO_ARRAY, -1, "Prueba1","ApellidPrueba1",0,1,"vuelo1");
+				addPassenger(ArrayPassenger, TAMANIO_ARRAY, -2, "Prueba2","ApellidPrueba2",0,2,"vuelo2");
+				addPassenger(ArrayPassenger, TAMANIO_ARRAY, -3, "Prueba3","ApellidPrueba3",0,2,"vuelo3");
+				break;
 		}
 		mostrarMenuUno();
-		utn_getNumero(&opcion,"Ingrese una opción\n", "Reingrese una opción\n",1,5,3);
+		utn_getNumero(&opcion,"Ingrese una opción\n", "Reingrese una opción\n",1,6,3);
 
-	}while(opcion !=5);
+	}while(opcion !=SALIR);
 
 	puts("\n Ha salido del sistema");
 

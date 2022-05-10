@@ -271,6 +271,7 @@ int utn_getNombre(char* pResultado, int longitud,char* mensaje, char* mensajeErr
 		printf("%s",mensaje);
 		if(getNombre(bufferString,sizeof(bufferString)) == 0 &&
 				strnlen(bufferString,sizeof(bufferString)) < longitud ){
+			uppercaselInitial(bufferString);
 			strncpy(pResultado,bufferString,longitud);
 			retorno = 0;
 			break;

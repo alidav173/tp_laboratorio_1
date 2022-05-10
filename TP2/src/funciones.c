@@ -15,7 +15,8 @@ void mostrarMenuUno(){
 	printf("2. MODIFICAR PASAJERO: \n");
 	printf("3. BAJA PASAJERO: \n");
 	printf("4. INFORMES: \n");
-	printf("5. SALIR: \n");
+	printf("5. HARDCODEO: \n");
+	printf("6. SALIR: \n");
 
 }
 
