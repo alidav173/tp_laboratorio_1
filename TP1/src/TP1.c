@@ -7,15 +7,10 @@
  Description : TP1 LABORATORIO PROGRAMACION 1
  ============================================================================
  */
-#include <stdio.h>
-#include "input.h"
-#include <limits.h>
-#define SALIDA 6
-#define ERROR -1
-
 
 #include <stdio.h>
 #include "input.h"
+#include "funciones.h"
 #include <limits.h>
 #define SALIDA 6
 #define ERROR -1
@@ -40,9 +35,9 @@ int main()
 
        case 2:
        mostrarMenu2();
-       validacion = getChar("\n Ingrese la aerolinea: ", "\n Reingrese la aerolinea: \n", &opcionMenu2, 3);
+       validacion = getChar("\n Ingrese la aerolinea: [y - aerolineas / z- latam]", "\n Reingrese la aerolinea:[y - aerolineas / z- latam] \n", &opcionMenu2, 3);
        while(opcionMenu2 !=AEROLINEAS && opcionMenu2 != LATAM){
-    	   getChar("\n Ingrese la aerolinea: ", "\n Reingrese la aerolinea: \n", &opcionMenu2, 3);
+    	   getChar("\n Ingrese la aerolinea: [y - aerolineas / z- latam]", "\n Reingrese la aerolinea: [y - aerolineas / z- latam]\n", &opcionMenu2, 3);
        }
 
        if(opcionMenu2 == AEROLINEAS){
@@ -71,13 +66,18 @@ int main()
        break;
 
        case 4:
-       printf("\n Km ingresados: %.2f",kilometraje);
-       printf("\n Precio Aerolineas: %.2f",precioAerolineas);
-       mostrarResultados(&precioTarjetaDAero, &precioTarjetaCAero, &precioBitcoinAero,&precioPorKmAero);
-       printf("\n Precio Latam: %.2f",precioLatam);
-       mostrarResultados(&precioTarjetaDlatam, &precioTarjetaCLatam, &precioBitcoinLatam,&precioPorKmLatam);
-       mostrarDiferenciaDePrecios(&diferenciaPrecio);
-       break;
+    	   if(contadorErrores ==0){
+    	       printf("\n Km ingresados: %.2f",kilometraje);
+    	       printf("\n Precio Aerolineas: %.2f",precioAerolineas);
+    	       mostrarResultados(&precioTarjetaDAero, &precioTarjetaCAero, &precioBitcoinAero,&precioPorKmAero);
+    	       printf("\n Precio Latam: %.2f",precioLatam);
+    	       mostrarResultados(&precioTarjetaDlatam, &precioTarjetaCLatam, &precioBitcoinLatam,&precioPorKmLatam);
+    	       mostrarDiferenciaDePrecios(&diferenciaPrecio);
+    	   }
+    	   else{
+    		   printf("\n No se ingresaron los datos para hacer los calculos");
+    	   }
+    	   break;
 
        case 5:
        kilometraje = 7090;

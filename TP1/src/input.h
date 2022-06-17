@@ -20,16 +20,5 @@ int getInt(char mensaje[],int reintentos, int minimo, int maximo, char mensajeEr
 
 int getChar(char mensaje[], char mensajeError[], char *pCharIngresado, int reintentos);
 
-int calcularCostos(float km, float precio, float *precioTarjetaD, float *precioTarjetaC, float *precioBitcoin,float *precioPorKm);
-
-int diferenciaDePrecios(float precioAerolineas, float precioLatam, float *diferenciaPrecio);
-
-void mostrarMenuPrincipal();
-
-void mostrarMenu2();
-
-void mostrarResultados(float *precioTarjetaD, float *precioTarjetaC, float *precioBitcoin,float *precioPorKm);
-
-void mostrarDiferenciaDePrecios(float *diferenciaPrecio);
 
 #endif /* INPUT_H_ */
