@@ -108,7 +108,7 @@ static int addNode(LinkedList* this, int nodeIndex,void* pElement)
     			  nodoAux->pNextNode = nuevoNodo;
     		  }
     		  nuevoNodo->pElement = pElement;
-    		  this->size++;
+    		  this->size++;//incremento en la longitud de la linkedList
     		  returnAux = 0;
     	  }
     }
@@ -148,7 +148,7 @@ int ll_add(LinkedList* this, void* pElement)
     	if(len == 0){ //si es el primer elemento
     		this->pFirstNode = nuevoNodo;
     	}
-    	else{
+    	else{//para elementos mayores al primero
     		Node* ultimoNodo;
     		ultimoNodo = getNode(this, len-1);
     		ultimoNodo->pNextNode = nuevoNodo;
@@ -156,7 +156,7 @@ int ll_add(LinkedList* this, void* pElement)
 
     	}
     	nuevoNodo->pElement = pElement;
-		this->size++;
+		this->size++;//incremento la longitud de la linkedList
 		returnAux = 0;
     }
 
@@ -229,7 +229,7 @@ int ll_remove(LinkedList* this,int index)
         		Node* nodoAnterior = getNode(this, index-1);
         		nodoAnterior->pNextNode = nodoBuscado->pNextNode;
     		}
-    		this->size--;
+    		this->size--;//decrece la lista 
     		returnAux = 0;
     		free(nodoBuscado);
     	}
@@ -319,7 +319,7 @@ int ll_isEmpty(LinkedList* this)
 {
     int returnAux = -1;
     if(this != NULL){
-    	if(this->pFirstNode == NULL){
+    	if(this->pFirstNode == NULL){//si el primer nodo de la lista apunta a NULL
     		returnAux = 1;
     	}
     	else{
@@ -369,7 +369,7 @@ void* ll_pop(LinkedList* this,int index)
     if(this != NULL){ //Verifica que la lista no sea nula
     	int len = ll_len(this);
     	if(index >= 0 && index <len){
-    		Node* nodoBuscado = getNode(this, index); //cambiar por get solo
+    		Node* nodoBuscado = getNode(this, index); 
     		returnAux = nodoBuscado->pElement;
     		if(nodoBuscado->pElement != NULL){
     			ll_remove(this,index); //remuevo el nodo
