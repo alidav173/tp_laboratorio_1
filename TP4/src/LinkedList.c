@@ -108,7 +108,7 @@ static int addNode(LinkedList* this, int nodeIndex,void* pElement)
     			  nodoAux->pNextNode = nuevoNodo;
     		  }
     		  nuevoNodo->pElement = pElement;
-    		  this->size++;//incremento en la longitud de la linkedList
+    		  this->size++;
     		  returnAux = 0;
     	  }
     }
@@ -140,6 +140,7 @@ int test_addNode(LinkedList* this, int nodeIndex,void* pElement)
  */
 int ll_add(LinkedList* this, void* pElement)
 {
+	//corregir con el addNode
     int returnAux = -1;
     int len = ll_len(this);
 
@@ -196,7 +197,7 @@ void* ll_get(LinkedList* this, int index)
 int ll_set(LinkedList* this, int index,void* pElement)
 {
     int returnAux = -1;
-    if(this !=NULL && index >=0 && index <= ll_len(this)){
+    if(this !=NULL && index >=0 && index < ll_len(this)){
     	Node* nodoBuscado = getNode(this, index);
     	if(nodoBuscado != NULL){
     		nodoBuscado->pElement = pElement; //seteo el elemento en el nodo
@@ -219,7 +220,7 @@ int ll_set(LinkedList* this, int index,void* pElement)
 int ll_remove(LinkedList* this,int index)
 {
     int returnAux = -1;
-    if(this != NULL && index >= 0 && index <= ll_len(this)){
+    if(this != NULL && index >= 0 && index < ll_len(this)){
     	Node* nodoBuscado = getNode(this, index);
     	if(nodoBuscado != NULL){
     		if(index == 0){ //si es el primer elemento
@@ -229,7 +230,7 @@ int ll_remove(LinkedList* this,int index)
         		Node* nodoAnterior = getNode(this, index-1);
         		nodoAnterior->pNextNode = nodoBuscado->pNextNode;
     		}
-    		this->size--;//decrece la lista 
+    		this->size--;
     		returnAux = 0;
     		free(nodoBuscado);
     	}
@@ -248,12 +249,15 @@ int ll_remove(LinkedList* this,int index)
  */
 int ll_clear(LinkedList* this)
 {
+	//funcion corregida 21-06-22
     int returnAux = -1;
+    int len = ll_len(this);
 
     if(this != NULL){
-        	this->pFirstNode = NULL;
-        	this->size = 0;
-        	returnAux = 0;
+     for(int i = len-1; i>= 0; i--){
+    	 ll_remove(this,i);
+     }
+     returnAux =0;
     }
     return returnAux;
 }
@@ -268,11 +272,14 @@ int ll_clear(LinkedList* this)
  */
 int ll_deleteLinkedList(LinkedList* this)
 {
+	//funcion corregida 21-06-22
     int returnAux = -1;
     if(this != NULL){
-    	ll_clear(this);
-    	free(this);
-    	returnAux = 0;
+    	if(ll_clear(this)== 0){
+        	free(this);
+        	returnAux = 0;
+    	}
+
     }
 
     return returnAux;
@@ -288,7 +295,7 @@ int ll_deleteLinkedList(LinkedList* this)
  */
 int ll_indexOf(LinkedList* this, void* pElement)
 {
-	//revisar esta funcion
+
     int returnAux = -1;
     int i;
     if(this != NULL){
@@ -296,7 +303,7 @@ int ll_indexOf(LinkedList* this, void* pElement)
     	void* pBuscado;
     	for(i = 0; i < len; i++){
     		pBuscado=ll_get(this,i);
-    		if(pBuscado != NULL && pBuscado == pElement){
+    		if(pBuscado == pElement){// busco el elemento y si son iguales, return 0
     			returnAux = i;
     			break;
     		}
@@ -319,7 +326,7 @@ int ll_isEmpty(LinkedList* this)
 {
     int returnAux = -1;
     if(this != NULL){
-    	if(this->pFirstNode == NULL){//si el primer nodo de la lista apunta a NULL
+    	if(this->pFirstNode == NULL){
     		returnAux = 1;
     	}
     	else{
@@ -369,10 +376,11 @@ void* ll_pop(LinkedList* this,int index)
     if(this != NULL){ //Verifica que la lista no sea nula
     	int len = ll_len(this);
     	if(index >= 0 && index <len){
-    		Node* nodoBuscado = getNode(this, index); 
-    		returnAux = nodoBuscado->pElement;
+    		Node* nodoBuscado = getNode(this, index); //cambiar por get solo
+
     		if(nodoBuscado->pElement != NULL){
-    			ll_remove(this,index); //remuevo el nodo
+    			ll_remove(this,index); //remuevo el nodo, aqui returnAux (corregido)
+    			returnAux = nodoBuscado->pElement;
     		}
     	}
 
@@ -392,15 +400,13 @@ void* ll_pop(LinkedList* this,int index)
 */
 int ll_contains(LinkedList* this, void* pElement)
 {
+	//corregido el 23-06-22
     int returnAux = -1;
     if(this != NULL){
+    	returnAux = 0;
         	if(ll_indexOf(this,pElement) !=-1 ){
         		returnAux = 1;
         	}
-        	else{
-        		returnAux = 0;
-        	}
-
     }
 
     return returnAux;
@@ -417,24 +423,19 @@ int ll_contains(LinkedList* this, void* pElement)
 */
 int ll_containsAll(LinkedList* this,LinkedList* this2)
 {
+	//funcion corregida el 21-06-22
     int returnAux = -1;
-    int contador= 0;
     if(this != NULL && this2 != NULL){
     		int len2 = ll_len(this2);
     		void* pElement;
+			returnAux = 1;
     			for(int i = 0; i < len2; i++){
     				pElement = ll_get(this2,i);
-    					if(ll_contains(this,pElement)==1){
-    						contador++;
+    					if(ll_contains(this,pElement) == 0){
+    						returnAux = 0;
+    						break;
     					}
-    		}
-    		if(contador < len2){ //si el contador de elementos es igual a len2, estan todos contenidos
-    			returnAux = 0;
-    		}
-    		else{
-    			returnAux =1;
-    		}
-
+    			}
     }
 
     return returnAux;
@@ -480,10 +481,10 @@ LinkedList* ll_subList(LinkedList* this,int from,int to)
 */
 LinkedList* ll_clone(LinkedList* this)
 {
+	//funcion corregida el 21-06-22
     LinkedList* cloneArray = NULL;
 
     if(this != NULL){ //compruebo que la lista no sea nula
-    	cloneArray = ll_newLinkedList();
     	cloneArray = ll_subList(this,0,ll_len(this));
     }
 
